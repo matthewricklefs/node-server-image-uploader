@@ -23,6 +23,14 @@ router.post("/upload", (req, res) => {
   // req.file gives us image
   // req.body gives us the remainding fields
   upload(req, res, (err) => {
+    if (req.fileValidationError) {
+      return res.send(req.fileValidationError);
+    } else if (!req.file) {
+      return res.send("No Image Selected");
+    } else if (err) {
+      return res.send(err);
+    }
+
     return res.send(`
       Here is your image: <hr /> <img src="${req.file.path}" width="500"> <hr /> <a href="./">Upload Another </a>
     `);
